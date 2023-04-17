@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<vector<int>> ans;//final vector
+    
+    void addSubset(vector<int> combination,int n,int k,int index){
+        if(combination.size()<=k){//if greater than k backtrack
+            if(combination.size()==k){
+                ans.push_back(combination);
+                return;
+            }
+            for(int i=index+1;i<=n;i++){//add indexes from index+1 to n to not repeat a subset
+                combination.push_back(i);
+                addSubset(combination,n,k,i);
+                combination.pop_back();
+            }
+        }
+    }
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> combination;
+        addSubset(combination,n,k,0);
+        return ans;
+    }
+};
