@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<vector<int>> ans;
+    
+    void addSubset(vector<int> candidates,vector<int> combination,int index,int target,int currentSum){
+        if(currentSum<=target){
+            if(currentSum==target){
+                ans.push_back(combination);
+                return ;
+            }
+            for(int i=index;i<candidates.size();i++){//running from index to candidates.size() to avoid repeating of subset
+                if(currentSum+candidates[i]<=target){
+                    combination.push_back(candidates[i]);
+                    addSubset(candidates,combination,i,target,currentSum+candidates[i]);
+                    combination.pop_back();
+                }
+            }
+            
+        }
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(),candidates.end()); // sorting makes it easier to backtrack if currentSum>target
+        vector<int> combination;
+        addSubset(candidates,combination,0,target,0);
+        return ans;
+    }
+};
