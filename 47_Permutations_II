@@ -1,0 +1,62 @@
+class Solution {
+public:
+    vector<vector<int>> ans;
+    void addSubset(vector<int> nums,vector<int> combination,vector<bool> taken){
+        if(combination.size()<=nums.size()){
+            if(combination.size()==nums.size()){
+                ans.push_back(combination);
+                return ;
+            }
+            unordered_set<int> s;
+            for(int i=0;i<taken.size();i++){
+                if(taken[i]==false and s.find(nums[i])==s.end()){
+                    combination.push_back(nums[i]);
+                    taken[i]=true;
+                    s.insert(nums[i]);
+                    addSubset(nums,combination,taken);
+                    combination.pop_back();
+                    taken[i]=false;
+                }
+            }
+
+        }
+    }
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        //why is brave taking up 1.5GB with 3 tabs
+        vector<int> combination;
+        vector<bool> taken(nums.size(),false);
+        addSubset(nums,combination,taken);
+        return ans;
+    }
+};
+//AVIRATS BRUTE DUMBASS APPROACH
+//IMPORVED
+class Solution {
+public:
+    std::vector<std::vector<int>> permuteUnique(std::vector<int>& nums) {
+        std::vector<std::vector<int>> output;
+        std::vector<int> currSubset;
+
+        std::sort(nums.begin(), nums.end());
+        permutations(nums, 0, output);
+
+        return output;
+    }
+private:
+    void permutations(std::vector<int> const& nums, int pos, std::vector<std::vector<int>>& output) {
+        output.push_back(nums);
+
+        for(int i = pos; i < nums.size(); ++i) {
+            auto tmp = nums;
+            while (pos < nums.size()-1) {
+                ++pos;
+                if (tmp[i] != tmp[pos]) {
+                    std::swap(tmp[i], tmp[pos]);
+                    permutations(tmp, i+1, output);
+                }
+            }
+            pos = i;
+        }
+    }
+};
